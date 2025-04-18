@@ -6,7 +6,7 @@ end)
 if S then
     game.StarterGui:SetCore("SendNotification", {
         Title = "Silent Aim",
-        Text = "Silent Aim was reset, Mode: NoJumpBot",
+        Text = "Silent Aim was reset, Mode: NoJumpBot (Close Range)",
         Duration = 3
     })
 
@@ -119,14 +119,12 @@ local GetBasketball = function()
     return Player.Character:FindFirstChildOfClass("Folder")
 end
 
+-- ✅ CUSTOM: In-footing check for 30-60 studs range
 local InFootingCheck = function()
     local Distance = GetDistance()
     local Basketball = GetBasketball()
-    local Power
 
-    if Basketball then
-        Power = Basketball.PowerValue.Value
-    else
+    if not Basketball then
         IsInFooting = false
         return
     end
@@ -136,68 +134,29 @@ local InFootingCheck = function()
         return
     end
 
-    if Power == 80 then
-        IsInFooting = Distance > 57 and Distance < 64
-    elseif Power == 85 then
-        IsInFooting = Distance > 57 and Distance < 70
-    elseif Power == 90 then
-        IsInFooting = Distance > 57 and Distance < 74
-    elseif Power == 95 then
-        IsInFooting = Distance > 57 and Distance < 82
-    elseif Power == 100 then
-        IsInFooting = Distance > 57 and Distance < 87
-    else
-        IsInFooting = false
-    end
+    IsInFooting = Distance > 30 and Distance < 60
 end
 
+-- ✅ CUSTOM: Arc system based on short distance range
 local GetArc = function()
     local Distance = GetDistance()
-    local Basketball = GetBasketball()
-    if not Basketball then return end
+    local Arc
 
-    local Power = Basketball.PowerValue.Value
-    local Arc = nil
-
-    if Power == 80 then
-        if Distance > 57 and Distance < 59 then Arc = 60
-        elseif Distance > 59 and Distance < 62 then Arc = 55
-        elseif Distance > 62 and Distance < 64 then Arc = 40 end
-    elseif Power == 85 then
-        if Distance > 57 and Distance < 59 then Arc = 75
-        elseif Distance > 59 and Distance < 63 then Arc = 70
-        elseif Distance > 63 and Distance < 66 then Arc = 65
-        elseif Distance > 66 and Distance < 69 then Arc = 55
-        elseif Distance > 69 and Distance < 70 then Arc = 45 end
-    elseif Power == 90 then
-        if Distance > 57 and Distance < 63 then Arc = 90
-        elseif Distance > 63 and Distance < 66 then Arc = 85
-        elseif Distance > 66 and Distance < 69 then Arc = 80
-        elseif Distance > 69 and Distance < 73 then Arc = 70
-        elseif Distance > 73 and Distance < 74 then Arc = 65 end
-    elseif Power == 95 then
-        if Distance > 57 and Distance < 59 then Arc = 110
-        elseif Distance > 59 and Distance < 63 then Arc = 105
-        elseif Distance > 63 and Distance < 66 then Arc = 100
-        elseif Distance > 66 and Distance < 70 then Arc = 95
-        elseif Distance > 70 and Distance < 73 then Arc = 90
-        elseif Distance > 73 and Distance < 76 then Arc = 85
-        elseif Distance > 76 and Distance < 78 then Arc = 80
-        elseif Distance > 78 and Distance < 81 then Arc = 65
-        elseif Distance > 81 and Distance < 82 then Arc = 60 end
-    elseif Power == 100 then
-        if Distance > 57 and Distance < 66 then Arc = 120
-        elseif Distance > 66 and Distance < 69 then Arc = 115
-        elseif Distance > 69 and Distance < 73 then Arc = 110
-        elseif Distance > 73 and Distance < 77 then Arc = 105
-        elseif Distance > 77 and Distance < 80 then Arc = 100
-        elseif Distance > 80 and Distance < 82 then Arc = 95
-        elseif Distance > 82 and Distance < 84 then Arc = 90
-        elseif Distance > 84 and Distance < 85 then Arc = 85
-        elseif Distance > 85 and Distance < 87 then Arc = 75 end
+    if Distance > 30 and Distance <= 35 then
+        Arc = 160
+    elseif Distance > 35 and Distance <= 40 then
+        Arc = 155
+    elseif Distance > 40 and Distance <= 45 then
+        Arc = 150
+    elseif Distance > 45 and Distance <= 50 then
+        Arc = 145
+    elseif Distance > 50 and Distance <= 55 then
+        Arc = 140
+    elseif Distance > 55 and Distance <= 60 then
+        Arc = 135
     end
 
-    if Playground == true and Arc ~= nil then
+    if Playground == true and Arc then
         Arc = Arc - 3
     end
 
